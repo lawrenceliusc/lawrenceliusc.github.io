@@ -1,0 +1,145 @@
+.deck {
+  width: 70px;
+  height: 100px;
+}
+.fake_deck {
+  width: 70px;
+  height: 100px;
+  z-index: 1;
+  position: absolute;
+  animation-name: moving_deck;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+}
+
+.reading {
+  display: inline-block;
+  text-align: center;
+  position: absolute;
+  background-color: red;
+  margin: 0;
+  left: 0;
+  right: 0;
+  top: -1.5em;
+  animation-name: moving_reading;
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
+}
+
+.card-text {
+  height: 20px;
+}
+.card-outline {
+  width: 70px;
+  height: 100px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cards {
+  border: 5px solid;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.card-container {
+  background-color: aqua;
+
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 50px;
+  margin-bottom: 10px;
+  display: inline;
+  position: relative;
+}
+.card {
+  width: 70px;
+  height: 100px;
+  z-index: 1;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  animation-name: moving_card;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+}
+
+@keyframes moving_reading {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes moving_card {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes moving_deck {
+  from {
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.8;
+  }
+  to {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+}
+
+/* CSS */
+.button-89 {
+  --b: 3px; /* border thickness */
+  --s: 0.45em; /* size of the corner */
+  --color: #373b44;
+
+  padding: calc(0.5em + var(--s)) calc(0.9em + var(--s));
+  color: var(--color);
+  --_p: var(--s);
+  background: conic-gradient(
+      from 90deg at var(--b) var(--b),
+      #0000 90deg,
+      var(--color) 0
+    )
+    var(--_p) var(--_p) / calc(100% - var(--b) - 2 * var(--_p))
+    calc(100% - var(--b) - 2 * var(--_p));
+  transition: 0.3s linear, color 0s, background-color 0s;
+  outline: var(--b) solid #0000;
+  outline-offset: 0.6em;
+  font-size: 16px;
+
+  border: 0;
+
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-89:hover,
+.button-89:focus-visible {
+  --_p: 0px;
+  outline-color: var(--color);
+  outline-offset: 0.05em;
+}
+
+.button-89:active {
+  background: var(--color);
+  color: #fff;
+}

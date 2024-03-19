@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css">
+    9qimen.com
+  </head>
+  <br>
+    <br />
+    <label for="cars">选择预设:</label>
+    <select id="list" onchange ="layout()">
+      <option value="1">1张牌占卜法</option>
+      <option value="2">2张牌占卜法</option>
+      <option value="3">3张牌占卜法</option>
+      <option value="4">4张牌占卜法</option>
+      <option value="5">5张牌占卜法</option>
+      <option value="6">6张牌占卜法</option>
+      <option value="7">7张牌占卜法</option>
+      <option value="8">8张牌占卜法</option>
+      <option value="9">9张牌占卜法</option>
+      <option value="10">10张牌占卜法</option>
+      <option value="11">11张牌占卜法</option>
+      <option value="12">12张牌占卜法</option>
+      <option disabled style="font-style: italic">----------</option>
+      <option value="a">时间流牌阵</option>
+      <option value="b">圣三角牌阵</option>
+      <option value="c">身心灵牌阵</option>
+      <option value="d">上半年运势阵</option>
+      <option value="e">下半年运势阵</option>
+      <option value="f">周运势牌阵</option>
+      <option value="g">直指核心牌阵</option>
+      <option value="h">六芒星牌阵</option>
+      <option value="i">事业金字塔阵</option>
+      <option value="j">问题解决牌阵</option>
+    </select>
+    <br />
+
+    <div class="deck-container" style="border: 5px solid; display:flex; justify-content:center;">
+      <img class="deck"src="graphics/back.png"/>
+      <!-- <img src="graphics/light.gif" style="height:300px; box"> </img> -->
+      <!-- <div style="background-image: url(graphics/light.gif); background-size: cover; width:500px; height:300px">
+      </div> -->
+    </div>
+
+
+    <div class="cards">
+      <!-- <div>
+        <h2 style="display: absolute"> text</h2>
+
+      </div> -->
+      <!-- <div>
+      <h1>hi</h1>
+        <div style="display: inline; position: relative;">
+          <img class="card-outline" src= "graphics/frame.png"/>
+          <img class="card" src="graphics/back.png"/>
+          <input class="card-text" type="text"/>
+        </div>
+      </div> -->
+      
+      <div class="card-container">
+        <img class="card-outline" src= "graphics/frame.png"/>
+        <input class="card-text" type="text"/>
+        
+      </div>
+      
+    </div>
+
+    <div style="border: 5px solid;display:flex;justify-content: center; padding:5px;">
+      <button class="button-89" role="button" type="submit" onclick="start()">占卜</button>
+    </div>
+
+
+
+
+
+    <script>
+
+      // document.getElementById("list").addEventListener('change',layout)
+      // layout();
+      var values = [];
+
+      function start() {
+
+        const value = document.getElementById("list").value;
+        let num = 0;
+        if (!isNaN(value)) {
+          num = + value;
+        } else { 
+          num = 2;
+        }
+        
+        values = [];
+        while(values.length < num)
+        {
+          let temp = Math.floor(Math.random() * 64) + 1;
+          if(!values.includes(temp))
+          {
+            values.push(temp);
+          }
+        }
+
+        console.log(values);
+
+        //House keeping
+        document.getElementsByClassName("button-89")[0].disabled = true;
+        document.getElementById("list").disabled = true;
+        
+        //being animation
+        deck_animation(num);
+      }
+      function deck_animation(cards) {
+
+        //once deck_animation finishes go onto card_animation
+        if(cards == 0)
+        {
+          card_animation(0);
+          return;
+        }
+
+        const deck_container = document.getElementsByClassName("deck-container")[0];
+      
+        //deck animation
+        let fakedeck = document.createElement("img");
+        fakedeck.setAttribute("class", "fake_deck");
+        fakedeck.setAttribute("src", "graphics/back.png");
+
+        //recursive
+        deck_container.appendChild(fakedeck);
+          setTimeout(() => { deck_animation(cards-1);
+        }, 200)
+      }
+
+
+      function card_animation(num) {
+
+        const cards = document.getElementsByClassName("cards")[0];
+
+        //All cards are assigned!
+        if(cards.childElementCount == num)
+        {
+          document.getElementsByClassName("button-89")[0].disabled = false;
+
+          //Set button to reset
+          document.getElementsByClassName("button-89")[0].innerHTML = "从新开始"
+          document.getElementsByClassName("button-89")[0].setAttribute("onclick", "restart()");
+          return;
+        }
+
+        //Card animation
+        const new_card = document.createElement("img");
+        const card_container = document.getElementsByClassName("card-container")[num];
+        new_card.setAttribute("src", "graphics/back.png");
+        new_card.setAttribute("class", "card");
+        card_container.appendChild(new_card);
+
+          setTimeout(() => { card_animation(num+1);
+        }, 200)
+
+          setTimeout(() => { text_animation(num);
+        }, 200)
+      }
+
+      function text_animation(num) {
+
+        const card_container = document.getElementsByClassName("card-container")[num];
+        const h2 = document.createElement("h2");
+        h2.setAttribute("class","reading");
+        h2.innerHTML = "第" + values[num] + "象";
+        card_container.appendChild(h2);
+        
+      }
+
+      
+
+      function restart() {
+        document.getElementById("list").disabled = false;
+        const cards = document.getElementsByClassName("card");
+        const fake_cards = document.getElementsByClassName("fake_deck");
+        const readings = document.getElementsByClassName("reading");
+        console.log(fake_cards.length);
+        while(cards.length != 0)
+        {
+          cards[0].remove();
+          fake_cards[0].remove();
+          readings[0].remove();
+        }
+
+        document.getElementsByClassName("button-89")[0].innerHTML = "占卜"
+        document.getElementsByClassName("button-89")[0].setAttribute("onclick", "start()");
+          
+      }
+
+
+
+
+      function layout() {
+
+        const value = document.getElementById("list").value;
+
+        let num = 0;
+        if (!isNaN(value)) {
+          num = + value;
+        } else { 
+          num = 2;
+        }
+
+        const cards = document.getElementsByClassName("cards")[0];
+        
+
+        if(num > cards.childElementCount)
+        {
+          add_cards(num-cards.childElementCount);
+        }
+        else if (num < cards.childElementCount)
+        {
+          remove_cards(cards.childElementCount-num);
+        }
+      }
+
+
+      function remove_cards(num)
+      {
+        const cards = document.getElementsByClassName("cards")[0];
+
+        for(let i = 0; i < num; i++)
+        {
+          cards.removeChild(cards.lastElementChild);
+        }
+      }
+
+
+      function add_cards(num) {
+        console.log(num);
+
+      const cards = document.getElementsByClassName("cards")[0];
+
+        for (let i = 0; i < num; i++) {
+          console.log("triggered");
+
+        //   <div class="card-container">
+        // <img class="card-outline" src= "graphics/frame.png"/>
+        // <input class="card-text" type="text"/>
+
+          const card_container = document.createElement("div");
+          card_container.setAttribute("class","card-container");
+
+          const card_outline = document.createElement("img");
+          card_outline.setAttribute("class","card-outline");
+          card_outline.setAttribute("src","graphics/frame.png");
+
+          const input = document.createElement("input");
+          input.setAttribute("class", "card-text");
+          input.setAttribute("type", "text");
+
+          cards.appendChild(card_container);
+          card_container.appendChild(card_outline);
+          card_container.appendChild(input);
+        }
+      }
+    </script> 
+
+  </body>
+  
+</html>
